@@ -6,12 +6,12 @@ const initialState = {
 }
 
 export const noteReducer = (state = initialState, action) => {
-    switch(action.type) {
+    switch (action.type) {
         case SET_NOTES:
             return {
-            ...state,
+                ...state,
                 notes: action.notes
-        }
+            }
         default:
             return state
     }
@@ -21,31 +21,51 @@ export const noteReducer = (state = initialState, action) => {
 export const setNotes = (notes) => ({type: SET_NOTES, notes})
 
 // Redux thunks
-export const getNotes = () => async (dispatch) => {
-    const res = await axios.get(`${API_URL}/notes`)
+export const getNotes = (token) => async (dispatch) => {
+    const res = await axios.get(`${API_URL}/notes`, {
+        headers: {
+            Authorization: token // token of authorized user
+        }
+    })
     dispatch(setNotes(res.data))
 }
 
-export const updateNote = (notes, newNote) => (dispatch) => {
-    axios.post(`${API_URL}/notes/update/${newNote._id}`, newNote)
+export const updateNote = (notes, newNote, token) => (dispatch) => {
+    axios.post(`${API_URL}/notes/update/${newNote._id}`, newNote, {
+        headers: {
+            Authorization: token // token of authorized user
+        }
+    })
         .then(async () => {
-            const res = await axios.get(`${API_URL}/notes`)
+            const res = await axios.get(`${API_URL}/notes`, {
+                headers: {
+                    Authorization: token // token of authorized user
+                }
+            })
             dispatch(setNotes(res.data))
-            
         })
 }
 
-export const addNote = (notes) => (dispatch) => {
+export const addNote = (notes, userId, token) => (dispatch) => {
     const newNote = {
         title: '',
         text: '',
         isStarred: false,
-        tags: []
+        tags: [],
+        userId
     }
     notes = [...notes, newNote]
-    axios.post(`${API_URL}/notes/add`, newNote)
+    axios.post(`${API_URL}/notes/add`, newNote, {
+        headers: {
+            Authorization: token // token of authorized user
+        }
+    })
         .then(async () => {
-            const res = await axios.get(`${API_URL}/notes`)
+            const res = await axios.get(`${API_URL}/notes`, {
+                headers: {
+                    Authorization: token // token of authorized user
+                }
+            })
             dispatch(setNotes(res.data))
         })
 }

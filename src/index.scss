@@ -8,99 +8,170 @@ $primary-font: 'IBM Plex Serif';
 @mixin transition() {
   transition: 0.3s ease;
 }
+
 // Common styles
 button, input {
   outline: none;
 }
-.ql-editor{ // set a height for a text editor
+
+.ql-editor { // set a height for a text editor
   min-height: 76vh;
   max-height: 76vh;
 }
-
+.rotate{
+  transform: rotate(180deg);
+}
 // buttons
-.button-star{
-  &:hover{
+.button-star {
+  &:hover {
     font-weight: bold;
   }
 }
-.edit-buttons{
+
+.edit-buttons {
   padding-top: 20px;
   display: flex;
   justify-content: flex-end;
   margin-right: 20px;
-  button{
+
+  button {
     margin: 5px;
   }
-  button:hover{
+
+  button:hover {
     background: $main-bg-color;
   }
 }
-.navBar{
+
+.navBar {
   font-family: $primary-font;
   background: $main-bg-color;
   height: 100vh;
-  &__menu{
+  display: flex;
+  flex-direction: column;
+  padding: 10px;
+  &__menu {
     list-style: none;
     padding: 20px 0 0 0;
-    .navBar__item{
+
+    .navBar__item {
       @include transition();
       cursor: pointer;
       padding: 8px 0 0 40px;
       font-size: 18px;
-      &:hover{
+
+      &:hover {
         color: $primary-color;
       }
     }
   }
-
-  &__title{
+  &__userContainer{
+    display: flex;
+    align-items: center;
+    margin-top: 30px;
+    justify-content: space-between;
+    padding: 0 10px;
+    .navBar__btn{
+      @include transition();
+      outline: none;
+      border: none;
+      color: $title-color;
+      &:hover{
+        color: black;
+      }
+    }
+    .navBar__user{
+      display: flex;
+      align-items: center;
+      .navBar__userImgWrapper {
+        img {
+          width: 60px;
+          height: 60px;
+          object-fit: cover;
+          border-radius: 50%;
+        }
+    }
+    }
+    .navBar__userName{
+      margin: 0 10px;
+    }
+  }
+  &__title {
     color: $title-color;
     font-size: 25px;
     padding-left: 10px;
   }
   &__tags {
     list-style: none;
-    .navBar__tag{
+    .navBar__tag {
+      cursor: pointer;
+      @include transition();
       padding: 5px;
+      display: flex;
+      align-items: center;
+      &:hover{
+        color: $primary-color;
+      }
+    }
+  }
+  &__hiddenMenu {
+    list-style: none;
+    padding: 10px 20px;
+    li{
+      @include transition();
+      cursor: pointer;
+      &:hover{
+        color: $primary-color;
+      }
     }
   }
 }
-.notesContent{
+
+.notesContent {
   margin-top: 30px;
 }
-.notes{
+
+.notes {
   margin: 0 10px;
-  .notes__items{
+
+  .notes__items {
     font-family: $primary-font;
     height: 83vh;
     overflow-y: auto;
-    .note{
+
+    .note {
       @include transition();
       cursor: pointer;
       padding: 5px 20px;
-      &__title{
+
+      &__title {
         @include transition();
         color: black;
         font-size: 20px;
       }
-      &__content{
+
+      &__content {
         color: $title-color;
       }
-      &:hover, &__active{
+
+      &:hover, &__active {
         text-decoration: none;
-        .note__title{
+
+        .note__title {
           color: $primary-color;
         }
       }
     }
   }
-  &__container{
+
+  &__container {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
 
   }
-  &__add{
+
+  &__add {
     background: $primary-color;
     color: white;
     border: none;

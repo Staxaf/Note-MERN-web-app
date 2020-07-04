@@ -49,7 +49,7 @@ export const EditNote = props => {
     return <div className="col">
         <div className="form-group">
             <input type="email" className="form-control" id="exampleInputEmail1" aria-describedby="emailHelp"
-                   placeholder="Enter a title..." onChange={e => setTitleText(e.target.value)} value={titleText} />
+                   placeholder="Enter a title..." onChange={e => setTitleText(e.target.value)} value={titleText}/>
         </div>
         <ReactQuill value={noteText}
                     onChange={e => setNoteText(e)}
@@ -60,16 +60,17 @@ export const EditNote = props => {
                 ...props.note,
                 text: noteText,
                 title: titleText
-            })}><i className="fas fa-save" />
+            }, props.token)}><i className="fas fa-save"/>
             </button>
             <button className={"btn button-star shadow-none"} onClick={() => props.updateNote(props.notes, {
                 ...props.note,
                 isStarred: !props.note.isStarred
-            })}>{props.note.isStarred ? <i className="fas fa-star" /> : <i className="far fa-star" />}</button>
+            }, props.token)}>{props.note.isStarred ? <i className="fas fa-star"/> :
+                <i className="far fa-star"/>}</button>
             <button className={"btn"} onClick={() => {
                 props.deleteNote(props.notes, props.note._id)
                 history.push('/')
-            }}><i className="fas fa-trash-alt" /></button>
+            }}><i className="fas fa-trash-alt"/></button>
         </div>
     </div>
 }

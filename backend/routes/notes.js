@@ -1,25 +1,29 @@
 const router = require('express').Router()
 let Note = require('../models/note.model')
+const auth = require('../middleware/auth')
 
-router.route('/').get((req, res) => { // get all notes
+router.route('/').get(auth, (req, res) => { // get all notes
     Note.find().sort({ updatedAt: -1})
-        .then(notes => res.json(notes))
+        .then(notes => {
+            res.json(notes.filter(note => note.userId === req.user.id))
+        })
         .catch(err => res.status(400).json('Error: ' + err))
 })
 
-router.route('/add').post((req, res) => { // add new note
+router.route('/add').post(auth, (req, res) => { // add new note
     const note = new Note({
         title: req.body.title,
         text: req.body.text,
         isStarred: req.body.isStarred,
-        tags: req.body.tags
+        tags: req.body.tags,
+        userId: req.body.userId
     })
     note.save()
         .then(() => res.json('Note is added!'))
         .catch(err => res.status(400).json('Error: ' + err))
 })
 
-router.route('/update/:id').post((req, res) => {
+router.route('/update/:id').post(auth, (req, res) => {
     Note.findById(req.params.id)
         .then(note => {
             note.title = req.body.title

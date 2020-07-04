@@ -1,27 +1,48 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import "bootstrap/dist/css/bootstrap.min.css"
 import './index.scss'
-import {NavBar} from "./components/Navbar/NavBar";
 import NotesContent from "./components/NotesContent/NotesContent";
-import {BrowserRouter} from "react-router-dom"
-import {Route} from "react-router-dom";
+import {Route} from "react-router-dom"
+import {connect} from "react-redux";
+import {useHistory} from "react-router-dom";
+import LoginContainer from "./components/Auth/LoginContainer";
+import {getUserWithToken, setToken} from "./redux/auth-reducer";
+import Loader from 'react-loader-spinner'
 
 const App = (props) => {
+    const history = useHistory()
+    useEffect(() => {
+        props.getUserWithToken(localStorage.getItem('token'))
+    }, [])
+    useEffect(() => {
+        if (!props.user) {
+            history.push('/login')
+        } else {
+            history.push('/')
+        }
+    }, [props.user])
 
-  return (
-   <BrowserRouter>
-       <div className="appWrapper">
-           <div className="row no-gutters">
-               <div className="col-2">
-                   <NavBar />
-               </div>
-               <div className="col-10">
-                   <Route path={'/:userId?'} render={() => <NotesContent/>} />
-               </div>
-           </div>
-       </div>
-   </BrowserRouter>
-  );
+    return (
+
+        <div className="appWrapper">
+            <div className="row no-gutters">
+                {props.isUserLoaded ? props.user ? <Route exact path={'/:userId?'} render={() => <NotesContent/>}/> :
+                    <LoginContainer/> : <div className={"text-center"}>
+                    <Loader
+                        type="Puff"
+                        color="#00bb93"
+                        height={50}
+                        width={50}
+                    />
+                </div>}
+            </div>
+        </div>
+    );
 }
 
-export default App;
+const mapStateToProps = (state) => ({
+    user: state.auth.user,
+    isUserLoaded: state.auth.isUserLoaded
+})
+
+export default connect(mapStateToProps, {setToken, getUserWithToken})(App);

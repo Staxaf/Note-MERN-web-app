@@ -21,7 +21,7 @@ export const Notes = props => {
                 {props.notes ? props.notes.filter(note => note.title.indexOf(searchText) !== -1).map(note => <Note note={note}/>) : <p>Loading...</p>}
             </div>
             <button className={"notes__add"} onClick={() => {
-                props.addNote(props.notes)
+                props.addNote(props.notes, props.user._id, props.token)
             }}>Add a note
             </button>
         </div>

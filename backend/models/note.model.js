@@ -18,6 +18,10 @@ const noteSchema = new Schema({
     tags: {
         type: Array,
         required: false
+    },
+    userId: {
+        type: String,
+        required: true
     }
 }, {
     timestamps: true
